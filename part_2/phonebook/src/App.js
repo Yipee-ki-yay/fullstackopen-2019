@@ -2,13 +2,17 @@ import React, { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notification from './components/Notification'
 import phonebookService from './services/phonebook'
+import './index.css'
 
 const App = () => {
   const [ persons, setPersons] = useState([]) 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ filterStr, setFilterStr ] = useState('')
+  const [ notificationMessage, setNotificationMessage] = useState(null)
+  const [ notificationFlag, setNotificationFlag] = useState('success')
 
   useEffect(() => {
     phonebookService
@@ -34,7 +38,20 @@ const App = () => {
         phonebookService
           .update(id, newPerson)
           .then(returnedPerson => {
+            setNotificationMessage(`${newName} number is updated`);
+            setTimeout(() => {
+              setNotificationMessage(null);
+            }, 5000)
             setPersons(persons.map(p => p.id !== id ? p : returnedPerson));
+          })
+          .catch(error => {
+            setNotificationFlag('error');
+            setNotificationMessage(`information of ${newName} has already been removed from the server`);
+            setTimeout(() => {
+              setNotificationMessage(null);
+              setNotificationFlag('success');
+            }, 5000);
+            setPersons(persons.filter(p => p.id !== id));
           })
       }
       setNewName('');
@@ -45,6 +62,10 @@ const App = () => {
     phonebookService
       .create(newPerson)
       .then(returnedPerson => {
+        setNotificationMessage(`added ${returnedPerson.name}`);
+        setTimeout(() => {
+          setNotificationMessage(null);
+        }, 5000);
         setPersons(persons.concat(returnedPerson));
         setNewName('');
         setNewNumber('');
@@ -74,6 +95,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notificationMessage} flag={notificationFlag} />
       <Filter filterStr={filterStr} filterData={filterData} />
       <h2>add a new</h2>
       <PersonForm 
