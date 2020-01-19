@@ -6,7 +6,7 @@ const Persons = ({matchPersons, deletePerson}) => {
     <ul>
       {matchPersons.map((p) => 
         <Person 
-          key={p.name} 
+          key={p.id} 
           name={p.name} 
           number={p.number} 
           deletePerson={() => deletePerson(p.id)}

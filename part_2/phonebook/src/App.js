@@ -70,6 +70,14 @@ const App = () => {
         setNewName('');
         setNewNumber('');
       })
+      .catch(error => {
+        setNotificationFlag('error');
+        setNotificationMessage(`${error.response.data.error}`);
+        setTimeout(() => {
+          setNotificationFlag('success');
+          setNotificationMessage(null);
+        }, 5000);
+      })
   }
 
   const filterData = (e) => {
