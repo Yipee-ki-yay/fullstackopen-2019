@@ -1,9 +1,9 @@
-PUT http://localhost:3003/api/blogs/5e2761adba096d5e3334fb70
+PUT http://localhost:3003/api/blogs/5e31efd25b7982b3c1a8e6ab
 Content-Type: application/json
 
 {
-  "title": "Blog1",
-  "author": "Abba",
-  "url": "Ab",
+  "title": "Blog3q",
+  "author": "5e2f4ca50645845d12fe7065",
+  "url": "q",
   "likes": 10
 }

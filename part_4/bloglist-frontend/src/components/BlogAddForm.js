@@ -1,37 +1,51 @@
 import React, { useState } from 'react'
+import  { useField } from '../hooks'
 
 const BlogAddForm = ({addBlog}) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  // const [title, setTitle] = useState('')
+  // const [author, setAuthor] = useState('')
+  // const [url, setUrl] = useState('')
+
+  const title = useField('text')
+  const author = useField('text')
+  const url = useField('text')
+  const { setEmptyValue: titleSetEmptyValue, ...titleAttrs } = title;
+  const { setEmptyValue: authorSetEmptyValue, ...authorAttrs } = author;
+  const { setEmptyValue: urlSetEmptyValue, ...urlAttrs } = url;
+
 
   const handleSubmitBlog = (e) => {
     e.preventDefault();
 
     const newBlog = {
-      title, author, url
+      title: title.value, 
+      author: author.value, 
+      url: url.value
     }
 
     addBlog(newBlog)
 
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    title.setEmptyValue()
+    author.setEmptyValue()
+    url.setEmptyValue()
+    // setTitle('')
+    // setAuthor('')
+    // setUrl('')
   }
   
   return (
     <form onSubmit={handleSubmitBlog}>
       <div>
         <span>title:</span>
-        <input type="text" name="title" value={title} onChange={(e) => setTitle(e.target.value)} />
+        <input {...titleAttrs} />
       </div>
       <div>
         <span>author:</span>
-        <input type="text" name="author" value={author} onChange={(e) => setAuthor(e.target.value)} />
+        <input {...authorAttrs} />
       </div>
       <div>
         <span>url:</span>
-        <input type="text" name="url" value={url} onChange={(e) => setUrl(e.target.value)} />
+        <input {...urlAttrs} />
       </div>
       <button type="submit">create</button>
     </form>
